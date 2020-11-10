@@ -1,6 +1,7 @@
 # Setup distro
 
 Opinionated install and setup for new distros.
+Under development, use at your on risk.
 
 ## How to use it
 
