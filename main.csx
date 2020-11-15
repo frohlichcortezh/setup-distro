@@ -62,6 +62,12 @@ private void InstallNeededTools()
     List<string> tools = new List<string>();
     tools.Add("lsb-core");
     tools.Add("lsb-release");
+    
+    if (distribution.IsDebian()) 
+    {
+        tools.Add("ppa-purge");
+    }
+    
 
     bash.Execute("Updating system", "sudo apt-get update -y");
     bash.Execute("Upgrading system", "sudo apt-get upgrade -y");
