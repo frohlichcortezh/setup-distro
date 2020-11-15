@@ -38,18 +38,20 @@ Non-ehaustive list of things to do, for a better way to see how this repository 
 
 ## On .NET CORE scripting
 
-https://itnext.io/hitchhikers-guide-to-the-c-scripting-13e45f753af9
-https://github.com/filipw/dotnet-script
-https://galdin.dev/blog/csharp-scripts-using-dotnet-script/
-https://dev.to/denolfe/c-scripting-using-dotnet-script-1h06
+* [Hitchhiker’s Guide to the C# scripting](https://itnext.io/hitchhikers-guide-to-the-c-scripting-13e45f753af9)
+* https://github.com/filipw/dotnet-script
+* https://galdin.dev/blog/csharp-scripts-using-dotnet-script/
+* https://dev.to/denolfe/c-scripting-using-dotnet-script-1h06
 
 
 ## Awesome dotnet
 
-https://github.com/goblinfactory/konsole
-https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
+* https://github.com/goblinfactory/konsole
+* https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
 
 ## Awesome bash
 
-https://github.com/v1cont/yad
-https://sourceforge.net/p/yad-dialog/wiki/Examples/?page=1
+* https://github.com/v1cont/yad
+* https://sourceforge.net/p/yad-dialog/wiki/Examples/?page=1
+
+* https://developer.gnome.org/jhbuild/unstable/getting-started.html.en
