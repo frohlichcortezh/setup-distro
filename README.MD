@@ -34,3 +34,22 @@ Non-ehaustive list of things to do, for a better way to see how this repository 
 
 1. Create wiki
 2. Create template for issues/features
+
+
+## On .NET CORE scripting
+
+https://itnext.io/hitchhikers-guide-to-the-c-scripting-13e45f753af9
+https://github.com/filipw/dotnet-script
+https://galdin.dev/blog/csharp-scripts-using-dotnet-script/
+https://dev.to/denolfe/c-scripting-using-dotnet-script-1h06
+
+
+## Awesome dotnet
+
+https://github.com/goblinfactory/konsole
+https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
+
+## Awesome bash
+
+https://github.com/v1cont/yad
+https://sourceforge.net/p/yad-dialog/wiki/Examples/?page=1

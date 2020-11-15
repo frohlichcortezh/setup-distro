@@ -1,8 +1,17 @@
 #!/usr/bin/env dotnet-script
 
-
 #region "Shells "
-public class Bash
+
+public interface IShell 
+{
+    string Execute(string cmd);
+
+    string Execute(string description, string cmd);
+    
+    string ls(params string[] args);
+}
+
+public class Bash: IShell
 {
     #region Fields
     private System.Diagnostics.Process process;

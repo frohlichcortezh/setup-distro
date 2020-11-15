@@ -15,23 +15,45 @@ using System.Text.RegularExpressions;
 
 #region Main
 
+UserInformation userInformation;
 Distribution distribution;
-Bash bash = new Bash();
+IShell bash = new Bash();
+Git git = new Git(bash);
+
+GetUserInformation();
+
+CreateNecessaryFolders();
 
 GetDistributionInformation();
+
 InstallNeededTools();
+
+CloneGitRepositories(userInformation.HomePath);
+
 
 #endregion Main
 
 #region Methodes
 
+private void GetUserInformation() 
+{
+    userInformation = new UserInformation();
+    userInformation.HomePath = "~";
+}
+private void CreateNecessaryFolders(string homePath = "~") 
+{
+    Directory.CreateDirectory($"{homePath}/dev");
+    Directory.CreateDirectory($"{homePath}/dev/shell-scripts");
+    Directory.CreateDirectory($"{homePath}/packages");
+    Directory.CreateDirectory($"{homePath}/applications");
+}
 private void GetDistributionInformation()
 {
     List<string> lsb_release_a = bash.Execute("lsb_release -da").Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
     List<string> os_release = bash.Execute("cat /etc/os-release").Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
 
-    string distributorID, description, release, codename, version, idLike;
-    distributorID = description = release = version = codename = idLike = string.Empty;
+    string distributorID, description, release, codename, version, idLike, kernel, architecture;
+    distributorID = description = release = version = codename = idLike = kernel = architecture = string.Empty;
 
     foreach (var lsb_release_a_field in lsb_release_a)
     {
@@ -54,7 +76,23 @@ private void GetDistributionInformation()
             idLike = Regex.Match(os_release_field, "ID_LIKE=(.*)$").Result("$1").ToString().Trim();
     }     
     
-    distribution = new Distribution(distributorID, description, release, version, codename, idLike);    
+    distribution = new Distribution(distributorID, description, release, version, codename, idLike);
+
+    if (distribution.IsDebian()) 
+    {
+        List<string> hostnamectl = bash.Execute("hostnamectl").Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+
+        foreach (var hostnamectl_field in hostnamectl)
+        {
+            if (hostnamectl_field.Contains("Kernel:"))
+                kernel = Regex.Match(hostnamectl_field, "Kernel:(.*)$").Result("$1").ToString().Trim();
+            else if (hostnamectl_field.Contains("Architecture:"))
+                idLike = Regex.Match(hostnamectl_field, "ID_LIKE=(.*)$").Result("$1").ToString().Trim();
+        }    
+    }
+    
+    distribution.AddKernelAndArchicteture(kernel, architecture);
+    
     Console.WriteLine("You're running {0} ({1})", distribution.Description, distribution.IdLike);
 }
 
@@ -63,10 +101,16 @@ private void InstallNeededTools()
     List<string> tools = new List<string>();
     tools.Add("lsb-core");
     tools.Add("lsb-release");
-    
+    tools.Add("git");
+    tools.Add("wmctrl");
+    tools.Add("autoconf");
+    tools.Add("automake");
+    tools.Add("intltool");
+
     if (distribution.IsDebian()) 
     {
         tools.Add("ppa-purge");
+
     }
     
 
@@ -75,4 +119,20 @@ private void InstallNeededTools()
     bash.Execute("Installing needed tools", "sudo apt-get install " + string.Join(" ", tools.ToArray()) + " -y");
 }
 
+private void CloneGitRepositories(string homePath) 
+{    
+    git.Clone("https://github.com/frohlichcortezh/bash-scripts.git", $"{homePath}/dev/shell-scripts/");
+    git.Clone("https://github.com/frohlichcortezh/fish-functions.git", $"{homePath}/dev/shell-scripts/");
+    
+    git.Clone("https://gitlab.gnome.org/GNOME/jhbuild.git", $"{homePath}/dev/shell-scripts/");
+    Console.WriteLine(bash.Execute(string.Concat("cd ", $"{homePath}/dev/shell-scripts/jhbuild", " && ./autogen.sh")));
+    Console.WriteLine(bash.Execute(string.Concat("cd ", $"{homePath}/dev/shell-scripts/jhbuild", " && make")));
+    Console.WriteLine(bash.Execute(string.Concat("cd ", $"{homePath}/dev/shell-scripts/jhbuild", " && make install")));
+    bash.Execute("echo 'PATH=$PATH:~/.local/bin' >> ~/.bashrc");
+
+    git.Clone("https://github.com/v1cont/yad.git", $"{homePath}/dev/shell-scripts/yad-dialog-code");
+    Console.WriteLine(bash.Execute(string.Concat("cd ", $"{homePath}/dev/shell-scripts/yad-dialog-code", " && autoreconf -ivf && intltoolize")));
+    Console.WriteLine(bash.Execute(string.Concat("cd ", $"{homePath}/dev/shell-scripts/yad-dialog-code", " && ./configure && make && make install")));
+    bash.Execute("gtk-update-icon-cache");
+}
 #endregion
