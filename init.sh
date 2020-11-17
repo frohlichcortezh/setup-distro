@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-mkdir $HOME/dev
-mkdir $HOME/dev/shell-scripts
-mkdir $HOME/packages
-mkdir $HOME/applications
-
-# ToDo break it into different files
-
 # ToDo ask all user informations in the beginning
 
 #git clone https://github.com/frohlichcortezh/bash-scripts.git $HOME/dev/shell-scripts/
@@ -53,3 +46,7 @@ sudo systemctl enable xrdp
 # manual actions
 
 firefox https://extensions.gnome.org/extension/906/sound-output-device-chooser/
+
+# gnome alt+tab switch windows not group of windows
+# https://techwiser.com/ubuntu-alt-tab-ungroup/
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"

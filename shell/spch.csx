@@ -1,32 +1,27 @@
 #!/usr/bin/env dotnet-script
+#load "IShell.csx"
+
+using System;
 using System.Diagnostics;
 
-#region "Shells "
-
-public interface IShell 
-{
-    string Execute(string cmd);
-
-    string Execute(string description, string cmd);
-    
-    string ls(params string[] args);
-}
-
-public class Bash: IShell
+/// SuperLocal ConCHa (Shell in portuguese)
+public class Spch: IShell
 {
     #region Fields
     private System.Diagnostics.Process process;
 
+    private readonly string _fileName;
     #endregion
 
     #region Constructor 
-    public Bash() 
+    public Spch(string fileName) 
     {
+        _fileName = fileName;
         process = new Process()
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "/bin/bash",
+                FileName = _fileName,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
@@ -75,35 +70,14 @@ public class Bash: IShell
     
     public string ls(params string[] args) => Execute("ls " + string.Join(" ", args));
 
+    public string dir(params )
     #endregion
 
     #region Private methods
     
-    private string EscapeArgs(string cmd) => cmd.Replace("\"", "\\\"");
+    protected string EscapeArgs(string cmd) => cmd.Replace("\"", "\\\"");
+
+    public
     
     #endregion
 }
-
-
-   public static string Fish(this string cmd) 
-    {
-        var escapedArgs = cmd.Replace("\"", "\\\"");
-
-        var process = new Process()
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "usr/bin/fish",
-                Arguments = $"-c \"{escapedArgs}\"",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        };
-        process.Start();
-        string result = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
-        return result;
-    }
-    
-#endregion

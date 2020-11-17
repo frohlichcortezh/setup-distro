@@ -55,3 +55,11 @@ Non-ehaustive list of things to do, for a better way to see how this repository 
 * https://sourceforge.net/p/yad-dialog/wiki/Examples/?page=1
 
 * https://developer.gnome.org/jhbuild/unstable/getting-started.html.en
+
+## Cross platform GUI
+
+* https://github.com/AvaloniaUI/Avalonia
+   * https://avaloniaui.net/docs/quickstart/create-new-project
+* https://github.com/picoe/Eto
+* http://www.wxwidgets.org/
+* https://www.gtk.org/docs/installations/linux/
